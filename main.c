@@ -39,9 +39,9 @@ init(void)
 	WDTCTL = WDTPW + WDTHOLD;
 	
 	/** TIMER **/
-	TACCR0 = 1000;
+	TACCR0 = 1000 -1;
 	/* SMCLK */
-	TACTL |= TASSEL_1;
+	TACTL |= TASSEL_ACLK;
 	/* up mode */
 	TACTL |= MC_UPTO_CCR0;
 	/* enable interrupts at count to CCR0 */
@@ -63,7 +63,7 @@ int
 main(void)
 {
 	init();
-
+	
 	for(;;)
 	{
 		if(interrupt_flags & TIMER_A_FLAG)
@@ -76,6 +76,7 @@ main(void)
 
 		/* enter sleep mode */
 		LPM3;
+
 	}
 }
 
