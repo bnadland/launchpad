@@ -8,10 +8,13 @@ OBJS=main.o
 
 
 all: $(OBJS)
-	$(CC) $(CFLAGS) -o main.elf $(OBJS)
+	$(CC) $(CFLAGS) -o $(OUT) $(OBJS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
+
+main.s: main.c
+	$(CC) $(CFLAGS) -S main.c
 
 clean:
 	rm -fr $(OUT) $(OBJS)

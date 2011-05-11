@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Benjamin Nadland <benjamin.nadland@freenet.de>
+ * Copyright (c) 2011 Benjamin Nadland <benjamin.nadland@freenet.de>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -39,7 +39,7 @@ init(void)
 	WDTCTL = WDTPW + WDTHOLD;
 	
 	/** TIMER **/
-	TACCR0 = 1000 -1;
+	TACCR0 = 128 -1;
 	/* SMCLK */
 	TACTL |= TASSEL_ACLK;
 	/* up mode */
@@ -63,6 +63,8 @@ int
 main(void)
 {
 	init();
+
+	volatile unsigned int counter = 0;
 	
 	for(;;)
 	{
@@ -71,7 +73,13 @@ main(void)
 			/* reset flag */
 			interrupt_flags &= ~TIMER_A_FLAG;
 			/* toggle leds */
-			P1OUT ^= (LED_GREEN + LED_RED);
+			//P1OUT ^= (LED_GREEN + LED_RED);
+			counter++;
+			if(counter > 64)
+			{
+				counter = 0;
+			}
+			P1OUT = counter;
 		}
 
 		/* enter sleep mode */
